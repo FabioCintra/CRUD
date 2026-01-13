@@ -21,7 +21,7 @@ public record UsuarioDTO (String nome,String email,String senha,TypeUser tipo,St
 		ValidarNome.validarNome(nome);
 		
 		/*
-		 * validacaoSenhas
+		 * validacaoSenha
 		 */
 		ValidarSenha.validarSenha(senha);
 		
