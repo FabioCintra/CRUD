@@ -1,4 +1,4 @@
-package com.fabioCRUD.Controller;
+package com.fabio.CRUD.Controller;
 
 
 import com.fabio.CRUD.DTO.UsuarioDTO;
