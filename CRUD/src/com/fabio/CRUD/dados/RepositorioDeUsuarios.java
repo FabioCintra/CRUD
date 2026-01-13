@@ -1,6 +1,7 @@
 package com.fabio.CRUD.dados;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -8,46 +9,30 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import com.fabio.CRUD.dados.execeptions.FalhaAoLerArquivoException;
-import com.fabio.CRUD.dados.execeptions.ErroAoSalvarNoArquivoExcepiton;
+import com.fabio.CRUD.dados.execeptions.ErroNaEntradaSaidaExcepiton;
+import com.fabio.CRUD.negocio.CodigoErroDTO;
 import com.fabio.CRUD.negocio.InterfaceDados;
 import com.fabio.CRUD.negocio.Usuario;
-import com.fabio.CRUD.negocio.exceptions.ListaDeUsuariosVaziaException;
+
 
 public class RepositorioDeUsuarios implements InterfaceDados{
 	
+
 	@Override
-	public void salvarUser(Usuario user) throws ErroAoSalvarNoArquivoExcepiton{
+	public void salvarUser(Usuario user) throws  ErroNaEntradaSaidaExcepiton{
 		
-		try(ObjectOutputStream salvar = new ObjectOutputStream(new FileOutputStream("BancoDeUsuarios.bin"))){
-			Map<String,Usuario> mapUser = new HashMap<>();
-			Optional<Map<String,Usuario>> listaUser = lendoUsurarios();
-			
-			/*
-			 * Se existir o Map,
-			 * Passa ele pra outra variavel e adicona o novo usuario nela
-			 * Depois salva no arquivo!
-			 * OBS: Substitui o arquivo por completo!
-			 */
-			
-			if(listaUser.isPresent()) {
-				mapUser = listaUser.get();
-				mapUser.put(user.getEmail(), user);
-				salvar.writeObject(mapUser);
-			}
-			/*
-			 * Se nao existir,
-			 * Eh feita a primeira insercao
-			 * Por fim salva no arquivo!
-			 */
-			else {
-				mapUser.put(user.getEmail(), user);
-				salvar.writeObject(mapUser);
-			}
-		}
-		catch(Exception e) {
-			throw new ErroAoSalvarNoArquivoExcepiton();
-		}
+		/*
+		 * Se existir o Map,
+		 * Passa ele pra outra variavel e adicona o novo usuario nela
+		 * Depois salva no arquivo!
+		 * OBS: Substitui o arquivo por completo!
+		 */
+		
+		Map<String,Usuario> mapUser = lendoUsurarios().orElse(new HashMap<>());
+		mapUser.put(user.getEmail(), user);
+		
+		//Salvando o novo Map de usuario!
+		salvamentoDeHashMap(mapUser);
 	}
 	
 	@Override
@@ -57,22 +42,25 @@ public class RepositorioDeUsuarios implements InterfaceDados{
 	 * 
 	 * Se nao achar o arquivo lanca uma execessao
 	 */
-	public  Optional<Map<String,Usuario>>lendoUsurarios() throws FalhaAoLerArquivoException{
+	public  Optional<Map<String,Usuario>>lendoUsurarios() throws ErroNaEntradaSaidaExcepiton{
 		
-		Map<String,Usuario> listaUsuarios = new HashMap<>();
-		
+		Map<String,Usuario> listaUsuarios;
+			
 		try(ObjectInputStream leitor = new ObjectInputStream(new FileInputStream("BancoDeUsuarios.bin"))){
 			Object obj = leitor.readObject();
-			
+				
 			listaUsuarios = (Map<String, Usuario>) obj ;
-			
+				
 			return (listaUsuarios == null) ? Optional.empty() : Optional.of(listaUsuarios);
 		}
-		catch(Exception e) {
-			throw new FalhaAoLerArquivoException();
+		catch(FileNotFoundException e) {
+			return Optional.empty();
 		}
-		
+		catch(Exception e) {
+			throw new ErroNaEntradaSaidaExcepiton(CodigoErroDTO.ERRO_AO_LER_ARQUIVO, "Erro na leitura de dados!");
+		}
 	}
+			
 
 	@Override
 	/*
@@ -83,20 +71,14 @@ public class RepositorioDeUsuarios implements InterfaceDados{
 	 * 
 	 * OBS: Caso o Map estiver vazio ele ira retornar uma execessao alertando que o banco de dados de users esta vazio
 	 */
-	public Optional<Usuario> buscaPorEmail(String email) throws ListaDeUsuariosVaziaException, FalhaAoLerArquivoException{
+	public Optional<Usuario> buscaPorEmail(String email) throws ErroNaEntradaSaidaExcepiton {
 		
 		Usuario userBuscado;
-		Optional<Map<String,Usuario>> usuarios = lendoUsurarios();
-		Map<String,Usuario> mapUser = new HashMap<>();
+		Map<String,Usuario> mapUser = lendoUsurarios().orElse(new HashMap<>());
 		
-		
-		if(!usuarios.isPresent()) {
-			throw new ListaDeUsuariosVaziaException();
-		}
-		
-		mapUser = usuarios.get();
+			
 		userBuscado = mapUser.get(email);
-		
+			
 		if(userBuscado == null) {
 			return Optional.empty();
 		}
@@ -104,7 +86,45 @@ public class RepositorioDeUsuarios implements InterfaceDados{
 			return Optional.of(userBuscado);
 		}
 		
+	}
+
+	@Override
+	public void atualizarUsuarioPorEmail(Usuario usuarioAtualizado, String emailChave) throws ErroNaEntradaSaidaExcepiton {
 		
+		Map<String,Usuario> mapUser = lendoUsurarios().orElse(null);
+		
+		//o if pode ser que suma depois
+		
+		
+		mapUser.remove(emailChave);
+		mapUser.put(usuarioAtualizado.getEmail(), usuarioAtualizado);
+		
+		//Salvando o novo Map de usuario!
+		salvamentoDeHashMap(mapUser);
+		
+	}
+	
+	@Override
+	public void deletarUsuarioPeloEmail(String email) throws ErroNaEntradaSaidaExcepiton {
+		Map<String,Usuario> mapUser = lendoUsurarios().orElse(null);
+		
+		//removendo o usuario!
+		mapUser.remove(email);
+		
+		//Salvando o novo Map de usuario!
+		salvamentoDeHashMap(mapUser);
+		
+	}
+	
+	private void salvamentoDeHashMap(Map<String,Usuario> mapUser) throws ErroNaEntradaSaidaExcepiton {
+		try(ObjectOutputStream salvar = new ObjectOutputStream(new FileOutputStream("BancoDeUsuarios.bin"))){
+			
+			salvar.writeObject(mapUser);
+			
+		}
+		catch(Exception e) {
+			throw new ErroNaEntradaSaidaExcepiton(CodigoErroDTO.ERRO_AO_SALVAR_ARQUIVO, "Erro no salvamento de dados!");
+		}
 	}
 	
 }

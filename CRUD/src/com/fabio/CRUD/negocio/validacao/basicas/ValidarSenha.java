@@ -1,20 +1,21 @@
 package com.fabio.CRUD.negocio.validacao.basicas;
 
-import com.fabio.CRUD.negocio.exceptions.CampoNuloException;
-import com.fabio.CRUD.negocio.exceptions.TamanhoDeSenhaInvalidoException;
+import com.fabio.CRUD.negocio.CodigoErroDTO;
+import com.fabio.CRUD.negocio.exceptions.OperacaoDeUsuarioInvalidoException;
 
 public class ValidarSenha {
 	
-	public static Boolean validarSenha(String senha) throws TamanhoDeSenhaInvalidoException, CampoNuloException {
-		String regex = "^.{8,20}$";
+	public static void validarSenha(String senha) throws OperacaoDeUsuarioInvalidoException {
+		String regexSenha = "^.{8,20}$";
 		
+		 
 		if(senha.isEmpty()) {
-			throw new CampoNuloException();
-		}
-		if(!senha.matches(regex)) {
-			throw new TamanhoDeSenhaInvalidoException();
+			throw new OperacaoDeUsuarioInvalidoException(CodigoErroDTO.CAMPO_NULO, "Preencha todos os campos antes de confirmar!");
 		}
 		
-		return true;
+		if(!senha.matches(regexSenha)) {
+			
+			throw new OperacaoDeUsuarioInvalidoException(CodigoErroDTO.TAMANHO_DE_SENHA_INVALIDO, "A senha deve ter entre 8 a 20 caracteres!");
+		}
 	}
 }

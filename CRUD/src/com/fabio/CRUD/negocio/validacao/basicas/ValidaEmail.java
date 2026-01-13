@@ -1,37 +1,22 @@
 package com.fabio.CRUD.negocio.validacao.basicas;
 
+import com.fabio.CRUD.negocio.CodigoErroDTO;
+import com.fabio.CRUD.negocio.exceptions.OperacaoDeUsuarioInvalidoException;
 
-import java.util.Optional;
-
-import com.fabio.CRUD.dados.RepositorioDeUsuarios;
-import com.fabio.CRUD.dados.execeptions.FalhaAoLerArquivoException;
-import com.fabio.CRUD.negocio.InterfaceDados;
-import com.fabio.CRUD.negocio.Usuario;
-import com.fabio.CRUD.negocio.exceptions.CampoNuloException;
-import com.fabio.CRUD.negocio.exceptions.EmailJaCadastradoException;
-import com.fabio.CRUD.negocio.exceptions.FormatoDoEmailErradoException;
-import com.fabio.CRUD.negocio.exceptions.ListaDeUsuariosVaziaException;
 
 
 public class ValidaEmail {
-	public static Boolean validarEmail(String email) throws FormatoDoEmailErradoException, CampoNuloException, EmailJaCadastradoException, ListaDeUsuariosVaziaException, FalhaAoLerArquivoException{
+	public static void validarEmail(String email) throws OperacaoDeUsuarioInvalidoException{
 		
-		String regex = "^[a-zA-z0-9]{5,20}@gmail\\.com";
-		InterfaceDados dados = new RepositorioDeUsuarios();
-		Optional<Usuario>user = dados.buscaPorEmail(email);
+		String regexEmail = "^[a-zA-z0-9]{5,20}@gmail\\.com";
 		
 		if(email.isEmpty()) {
-			throw new CampoNuloException();
+			throw new OperacaoDeUsuarioInvalidoException(CodigoErroDTO.CAMPO_NULO, "Preencha todos os campos antes de confirmar!");
 		}
-		if(!email.matches(regex)) {
-			throw new FormatoDoEmailErradoException();
-		}
-		if(user.isPresent()) {
-			throw new EmailJaCadastradoException();
+		if(!email.matches(regexEmail)) {
+			throw new OperacaoDeUsuarioInvalidoException(CodigoErroDTO.FORMATO_EMAIL_ERRADO, "Email escrito errado!");
 		}
 		
-		
-		return true;
 		
 	}
 	
