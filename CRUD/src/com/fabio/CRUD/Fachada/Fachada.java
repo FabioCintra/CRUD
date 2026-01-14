@@ -3,8 +3,8 @@ package com.fabio.CRUD.Fachada;
 
 import com.fabio.CRUD.Controller.ControladorUsuario;
 import com.fabio.CRUD.DTO.UsuarioDTO;
-import com.fabio.CRUD.dados.RepositorioDeUsuarios;
 import com.fabio.CRUD.dados.execeptions.ErroNaEntradaSaidaExcepiton;
+import com.fabio.CRUD.dados.usuario.RepositorioDeUsuarios;
 import com.fabio.CRUD.negocio.exceptions.OperacaoDeUsuarioInvalidoException;
 import com.fabio.CRUD.negocio.usuario.CodigoErroDTO;
 import com.fabio.CRUD.negocio.usuario.InterfaceDados;

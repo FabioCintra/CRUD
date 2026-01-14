@@ -1,8 +1,8 @@
 package com.fabio.CRUD.negocio.usuario;
 
 import com.fabio.CRUD.DTO.UsuarioDTO;
-import com.fabio.CRUD.dados.RepositorioDeUsuarios;
 import com.fabio.CRUD.dados.execeptions.ErroNaEntradaSaidaExcepiton;
+import com.fabio.CRUD.dados.usuario.RepositorioDeUsuarios;
 import com.fabio.CRUD.negocio.exceptions.OperacaoDeUsuarioInvalidoException;
 
 public class CriarUsuario {
