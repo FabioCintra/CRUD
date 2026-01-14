@@ -1,4 +1,4 @@
-package com.fabio.CRUD.negocio;
+package com.fabio.CRUD.negocio.usuario;
 
 public class GeradorId {
 	private static int id = 0;

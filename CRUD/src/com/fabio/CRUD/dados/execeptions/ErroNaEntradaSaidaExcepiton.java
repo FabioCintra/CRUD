@@ -1,6 +1,6 @@
 package com.fabio.CRUD.dados.execeptions;
 
-import com.fabio.CRUD.negocio.CodigoErroDTO;
+import com.fabio.CRUD.negocio.usuario.CodigoErroDTO;
 
 public class ErroNaEntradaSaidaExcepiton extends Exception{
 	

@@ -1,4 +1,4 @@
-package com.fabio.CRUD.negocio;
+package com.fabio.CRUD.negocio.usuario;
 
 public enum CodigoErroDTO {
 	EMAIL_JA_CADASTRADO, CAMPO_NULO, NENHUM_USUARIO_CADASTRADO, USUARIO_NAO_ENCONTRADO, ERRO_AO_LER_ARQUIVO,

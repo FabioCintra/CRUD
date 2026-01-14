@@ -1,6 +1,6 @@
 package com.fabio.CRUD.negocio.exceptions;
 
-import com.fabio.CRUD.negocio.CodigoErroDTO;
+import com.fabio.CRUD.negocio.usuario.CodigoErroDTO;
 
 public class OperacaoDeUsuarioInvalidoException extends Exception {
 	private CodigoErroDTO erro;

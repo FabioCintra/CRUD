@@ -1,7 +1,7 @@
 package com.fabio.CRUD.DTO;
 
-import com.fabio.CRUD.negocio.TypeUser;
 import com.fabio.CRUD.negocio.exceptions.OperacaoDeUsuarioInvalidoException;
+import com.fabio.CRUD.negocio.usuario.TypeUser;
 import com.fabio.CRUD.negocio.validacao.basicas.ValidaEmail;
 import com.fabio.CRUD.negocio.validacao.basicas.ValidarNome;
 import com.fabio.CRUD.negocio.validacao.basicas.ValidarSenha;

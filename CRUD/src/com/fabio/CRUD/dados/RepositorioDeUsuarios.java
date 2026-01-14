@@ -10,9 +10,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.fabio.CRUD.dados.execeptions.ErroNaEntradaSaidaExcepiton;
-import com.fabio.CRUD.negocio.CodigoErroDTO;
-import com.fabio.CRUD.negocio.InterfaceDados;
-import com.fabio.CRUD.negocio.Usuario;
+import com.fabio.CRUD.negocio.usuario.CodigoErroDTO;
+import com.fabio.CRUD.negocio.usuario.InterfaceDados;
+import com.fabio.CRUD.negocio.usuario.Usuario;
 
 
 public class RepositorioDeUsuarios implements InterfaceDados{

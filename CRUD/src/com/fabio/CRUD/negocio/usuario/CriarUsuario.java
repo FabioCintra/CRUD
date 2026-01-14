@@ -1,4 +1,4 @@
-package com.fabio.CRUD.negocio;
+package com.fabio.CRUD.negocio.usuario;
 
 import com.fabio.CRUD.DTO.UsuarioDTO;
 import com.fabio.CRUD.dados.RepositorioDeUsuarios;

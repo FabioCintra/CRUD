@@ -7,10 +7,10 @@ import java.util.Scanner;
 import com.fabio.CRUD.DTO.UsuarioDTO;
 import com.fabio.CRUD.Fachada.Fachada;
 import com.fabio.CRUD.dados.execeptions.ErroNaEntradaSaidaExcepiton;
-import com.fabio.CRUD.negocio.CodigoErroDTO;
-import com.fabio.CRUD.negocio.TypeUser;
-import com.fabio.CRUD.negocio.Usuario;
 import com.fabio.CRUD.negocio.exceptions.OperacaoDeUsuarioInvalidoException;
+import com.fabio.CRUD.negocio.usuario.CodigoErroDTO;
+import com.fabio.CRUD.negocio.usuario.TypeUser;
+import com.fabio.CRUD.negocio.usuario.Usuario;
 
 
 public class Main {

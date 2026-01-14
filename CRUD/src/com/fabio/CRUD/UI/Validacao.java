@@ -2,7 +2,7 @@ package com.fabio.CRUD.UI;
 
 import java.util.Scanner;
 
-import com.fabio.CRUD.negocio.TypeUser;
+import com.fabio.CRUD.negocio.usuario.TypeUser;
 
 
 public class Validacao {

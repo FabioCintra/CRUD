@@ -1,7 +1,7 @@
 package com.fabio.CRUD.negocio.validacao.basicas;
 
-import com.fabio.CRUD.negocio.CodigoErroDTO;
 import com.fabio.CRUD.negocio.exceptions.OperacaoDeUsuarioInvalidoException;
+import com.fabio.CRUD.negocio.usuario.CodigoErroDTO;
 
 public class ValidarSenha {
 	
