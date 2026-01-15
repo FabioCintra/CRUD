@@ -1,8 +1,12 @@
 package com.fabio.CRUD.negocio.eventos;
 
+import java.io.Serializable;
+
 import com.fabio.CRUD.DTO.EventoDTO;
 
-public class Evento {
+public class Evento implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	private int idEvento;
 	private String data;
 	private String hora;
