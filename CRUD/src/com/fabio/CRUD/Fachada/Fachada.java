@@ -1,10 +1,14 @@
 package com.fabio.CRUD.Fachada;
 
 
+import com.fabio.CRUD.Controller.ControladorEvento;
 import com.fabio.CRUD.Controller.ControladorUsuario;
+import com.fabio.CRUD.DTO.EventoDTO;
 import com.fabio.CRUD.DTO.UsuarioDTO;
+import com.fabio.CRUD.dados.eventos.RepositorioDeEventos;
 import com.fabio.CRUD.dados.execeptions.ErroNaEntradaSaidaExcepiton;
 import com.fabio.CRUD.dados.usuario.RepositorioDeUsuarios;
+import com.fabio.CRUD.negocio.eventos.BancoDeEvento;
 import com.fabio.CRUD.negocio.exceptions.OperacaoDeUsuarioInvalidoException;
 import com.fabio.CRUD.negocio.usuario.CodigoErroDTO;
 import com.fabio.CRUD.negocio.usuario.InterfaceDados;
@@ -34,6 +38,7 @@ public class Fachada {
 	 * Variaveis da classe
 	 */
 	private InterfaceDados implementacao = new RepositorioDeUsuarios();
+	private BancoDeEvento bancoEvento = new RepositorioDeEventos();
 	
 	/*
 	 * Funcao responsavel por fazer a primeira chamadas as demais camadas, afim de gerar um usuario
@@ -97,7 +102,19 @@ public class Fachada {
 		ControladorUsuario.intance().atualizarUser(userNovo, emailChave, implementacao);
 	}
 	
+	/*
+	 * Serve para deletar algum usuario ja existente!
+	 */
 	public void deletarUser(String email) throws ErroNaEntradaSaidaExcepiton {
 		ControladorUsuario.intance().deletarUsuario(email, implementacao);
+	}
+	
+	/*
+	 * Serve para criar um evento!
+	 * 
+	 * Evento nada mais eh doque um registro de qualquer acao que for realizada no sistema
+	 */
+	public void criarEvento(EventoDTO evento) throws ErroNaEntradaSaidaExcepiton {
+		ControladorEvento.instance().criarEvento(evento, bancoEvento);
 	}
 }	
