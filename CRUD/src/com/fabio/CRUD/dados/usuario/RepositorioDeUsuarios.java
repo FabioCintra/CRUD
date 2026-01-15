@@ -45,7 +45,7 @@ public class RepositorioDeUsuarios implements InterfaceDados{
 		
 		Map<String,Usuario> listaUsuarios;
 			
-		try(ObjectInputStream leitor = new ObjectInputStream(new FileInputStream("BancoDeUsuarios.bin"))){
+		try(ObjectInputStream leitor = new ObjectInputStream(new FileInputStream("./data/BancoDeUsuarios.bin"))){
 			Object obj = leitor.readObject();
 				
 			listaUsuarios = (Map<String, Usuario>) obj ;
@@ -116,7 +116,7 @@ public class RepositorioDeUsuarios implements InterfaceDados{
 	}
 	
 	private void salvamentoDeHashMap(Map<String,Usuario> mapUser) throws ErroNaEntradaSaidaExcepiton {
-		try(ObjectOutputStream salvar = new ObjectOutputStream(new FileOutputStream("BancoDeUsuarios.bin"))){
+		try(ObjectOutputStream salvar = new ObjectOutputStream(new FileOutputStream("./data/BancoDeUsuarios.bin "))){
 			
 			salvar.writeObject(mapUser);
 			

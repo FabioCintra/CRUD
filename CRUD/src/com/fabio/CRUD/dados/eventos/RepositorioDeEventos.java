@@ -31,7 +31,7 @@ public class RepositorioDeEventos implements BancoDeEvento{
 		 */
 		eventos = lerEventos().orElse(new ArrayList<>());
 		
-		try(ObjectOutputStream salvar = new ObjectOutputStream(new FileOutputStream("./data/BancoEventos"))){
+		try(ObjectOutputStream salvar = new ObjectOutputStream(new FileOutputStream("./data/BancoEventos.bin"))){
 			
 			eventos.add(evento);
 			
@@ -45,7 +45,7 @@ public class RepositorioDeEventos implements BancoDeEvento{
 	@Override
 	public Optional<List<Evento>> lerEventos() throws ErroNaEntradaSaidaExcepiton {
 		
-		try(ObjectInputStream ler = new ObjectInputStream(new FileInputStream("./data/BancoEventos"))){
+		try(ObjectInputStream ler = new ObjectInputStream(new FileInputStream("./data/BancoEventos.bin"))){
 			
 			Object obj = ler.readObject();
 			
