@@ -27,26 +27,34 @@ public class BootStrapIncialization {
 	private static File file;
 	
 	
-	public static void init() throws ErroNaEntradaSaidaExcepiton, OperacaoDeUsuarioInvalidoException {
-		
-		if(file == null) {
-			file = new File(AppConfig.get("db.path"));
-		}
-		
-		//se o arquivo BancoUsuario.bin nao existir
-		if(!file.exists()) {
-			// criando o arquivo BancoUsuario.bin e cadastrando o primeiro ADM
-			BootStrapIncialization.criandoPrimeiroAdm();
-		}
-		else {
-			InterfaceDados implementada = new RepositorioDeUsuarios();
-			Map<String,Usuario> users = implementada.lendoUsurarios().orElse(new HashMap<>());
+	public static void init(){
+		try {
+			if(file == null) {
+				file = new File(AppConfig.get("db.path"));
+			}
 			
-			//Se o admin principal nao estiver cadastrado!
-			if(users.get(AppConfig.get("admin.email")) == null) {
+			//se o arquivo BancoUsuario.bin nao existir
+			if(!file.exists()) {
+				// criando o arquivo BancoUsuario.bin e cadastrando o primeiro ADM
 				BootStrapIncialization.criandoPrimeiroAdm();
 			}
+			else {
+				InterfaceDados implementada = new RepositorioDeUsuarios();
+				Map<String,Usuario> users = implementada.lendoUsurarios().orElse(new HashMap<>());
+				
+				//Se o admin principal nao estiver cadastrado!
+				if(users.get(AppConfig.get("admin.email")) == null) {
+					BootStrapIncialization.criandoPrimeiroAdm();
+				}
+			}
 		}
+		catch(OperacaoDeUsuarioInvalidoException e) {
+			System.out.println("\n\u001B[31m[ERRO]: " + e.getMessage() + "\n\u001B[0m");
+		}
+		catch(ErroNaEntradaSaidaExcepiton e) {
+			System.out.println("\n\u001B[31m[ERRO]: " + e.getMessage() + "\n\u001B[0m");
+		}
+		
 		
 	}
 	

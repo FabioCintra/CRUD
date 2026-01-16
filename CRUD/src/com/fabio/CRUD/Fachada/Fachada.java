@@ -12,7 +12,9 @@ import com.fabio.CRUD.negocio.eventos.BancoDeEvento;
 import com.fabio.CRUD.negocio.exceptions.OperacaoDeUsuarioInvalidoException;
 import com.fabio.CRUD.negocio.usuario.CodigoErroDTO;
 import com.fabio.CRUD.negocio.usuario.InterfaceDados;
+import com.fabio.CRUD.negocio.usuario.TypeUser;
 import com.fabio.CRUD.negocio.usuario.Usuario;
+
 
 public class Fachada {
 	
@@ -116,5 +118,42 @@ public class Fachada {
 	 */
 	public void criarEvento(EventoDTO evento) throws ErroNaEntradaSaidaExcepiton {
 		ControladorEvento.instance().criarEvento(evento, bancoEvento);
+	}
+	
+	
+	
+	/*
+	 * Essa funcao vai verificar se as credenciais de loguin estao ok
+	 * 
+	 * E retornara o tipo de usuario que esta logando no sistema, se os dados estiverem ok!
+	 * 
+	 * Caso nao da excessao
+	 */
+	public Usuario verificacaoLogin(String email, String senha) throws ErroNaEntradaSaidaExcepiton, OperacaoDeUsuarioInvalidoException {
+		
+		//Verificando se o email e a senha estao num formato ok!
+		validandoEmail(email);
+		verificandoSenha(senha);
+		
+		/*
+		 * Caso a validacao der certo, o usuario correspondente ao email digitado sera buscado!
+		 * 
+		 * Se encontrado, testara se a senha eh igual a informada
+		 * 
+		 * Caso seja, retornara o seu tipo de usuario!
+		 * 
+		 * Caso nao o encontre, da excessao!
+		 */
+		Usuario user = buscarUsuarioPorEmail(email);
+		
+		if(user == null) {
+			throw new OperacaoDeUsuarioInvalidoException(CodigoErroDTO.USUARIO_NAO_ENCONTRADO, "Nao existe usuario com esse email!");
+		}
+		
+		if(!(senha.equals(user.getSenha()))){
+			throw new OperacaoDeUsuarioInvalidoException(CodigoErroDTO.SENHA_DIFERENTE, "Senha incorreta!");
+		}
+		
+		return user;
 	}
 }	

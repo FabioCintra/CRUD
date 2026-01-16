@@ -11,7 +11,7 @@ public class Validacao {
 	 * Valida se a opcao de acao do menu foi escolhida adequadamente
 	 */
 	public static String validarOpcaoMenu(String opcao) {
-		String regex = "^[0-4]{1}$";
+		String regex = "^[0-6]{1}$";
 		
 		while(!opcao.matches(regex)){
 			Scanner scanf = new Scanner(System.in);
