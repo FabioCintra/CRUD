@@ -25,13 +25,18 @@ public class AppConfig{
 		
 		
 		/*
-		 * InputeStream = eh basicamente um leitor de bytes de um arquivo, armazenando
+		 * InputStream = eh basicamente um leitor de bytes de um arquivo, armazenando
 		 * uma referencia a esse arquivo
 		 * 
 		 * AppConfig.class.getClassLoader().getResourceAsStream("config/app.config") : Quer dizer o seguinte
 		 * "Veja no arquivo onde AppConfig esta armazenado/sendo carregado, se existe o arquivo "config/app.config"
+		 * 
+		 * getResourceAsStream() = ele procura no carregador da classe que o chamou se o arquivo no caminho informado existe, 
+		 * se sim retorna ele em forma de INputStream se nn retorna null
+		 * 
+		 * '/' antes de 'config' quer dizer que esta procurando direto na raiz do classPath da aplicacao
 		 */
-		try(InputStream is = AppConfig.class.getClassLoader().getResourceAsStream("/config/app.properties")){
+		try(InputStream is = AppConfig.class.getResourceAsStream("/config/app.properties")){
 			
 			// se "config/app.config" nao existir!
 			if(is == null) {

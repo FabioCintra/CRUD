@@ -45,7 +45,8 @@ public class Main {
 		 * Alem disso registra todas as acoes que alguem fizer no programa mesmo que tal acao nao tenha exito
 		 * 
 		 */
-		Sistema.iniciar(user);
+		if(!(user == null)){Sistema.iniciar(user);}
+		else {System.out.println("\n\u001B[31m[ERRO]: " + "User not found" + "\n\u001B[0m");}
 	}
 
 }

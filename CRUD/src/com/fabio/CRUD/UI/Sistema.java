@@ -18,14 +18,14 @@ public class Sistema {
 	 */
 	public static void iniciar(Usuario usuarioLogado) {
 		Scanner scanf = new Scanner(System.in);
-		
+		Boolean system = true;
 		
 		System.out.println("-------------------------");
 		System.out.println("|\tBEM-VINDO\t|");
 		System.out.println("|     SISTEMA CRUD\t|");
 		System.out.println("-------------------------\n");
 		
-		while(true) {
+		while(system) {
 			String opcaoMenu, nome = null, email = null,senha = null ,dataCriacao, tipoDeUsuarioAuxiliar,emailBuscado;
 			int menuErro;
 			Usuario userBuscado = null;
@@ -255,6 +255,7 @@ public class Sistema {
 					
 					break;
 				case "0":
+					system = false;
 					break;
 			}
 		}
