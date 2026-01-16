@@ -31,11 +31,11 @@ public class AppConfig{
 		 * AppConfig.class.getClassLoader().getResourceAsStream("config/app.config") : Quer dizer o seguinte
 		 * "Veja no arquivo onde AppConfig esta armazenado/sendo carregado, se existe o arquivo "config/app.config"
 		 */
-		try(InputStream is = AppConfig.class.getClassLoader().getResourceAsStream("config/app.config")){
+		try(InputStream is = AppConfig.class.getClassLoader().getResourceAsStream("/config/app.properties")){
 			
 			// se "config/app.config" nao existir!
 			if(is == null) {
-				throw new ErroConfigException("Arquivo 'app.config' nao encontrado!");
+				throw new ErroConfigException("Arquivo 'app.properties' nao encontrado!");
 			}
 			
 			/*

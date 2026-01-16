@@ -9,7 +9,6 @@ public class Main {
 	 * Aqui ficara todas as chamadas de funcoes necessarias para o programa funcionar
 	 */
 	public static void main(String[] args)  {
-		
 		/*
 		 * Essa funcao eh responsavel por verificar se o admin principal esta cadastrado no programa ou se ja existe banco de dados
 		 * 
