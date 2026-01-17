@@ -1,6 +1,9 @@
 package com.fabio.CRUD.UI;
 
+import com.fabio.CRUD.DTO.EventoDTO;
+import com.fabio.CRUD.Fachada.Fachada;
 import com.fabio.CRUD.config.BootStrapIncialization;
+import com.fabio.CRUD.negocio.eventos.Acao;
 import com.fabio.CRUD.negocio.usuario.Usuario;
 
 public class Main {
@@ -46,7 +49,14 @@ public class Main {
 		 * 
 		 */
 		if(!(user == null)){Sistema.iniciar(user);}
-		else {System.out.println("\n\u001B[31m[ERRO]: " + "User not found" + "\n\u001B[0m");}
+		else {
+			System.out.println("\n\u001B[31m[ERRO]: " + "User not found" + "\n\u001B[0m");
+			EventoDTO evento = null;
+			
+			evento = FabricaDeEventos.gerandoEventoDTO(user.getEmail(), null, Acao.LOGIN_ERRO, false);
+			Fachada.instance().criarEvento(evento);
+			
+		}
 	}
 
 }

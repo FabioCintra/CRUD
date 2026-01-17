@@ -29,14 +29,18 @@ public class Evento implements Serializable{
 	}
 	
 	public void imprimir() {
-		System.out.println("\t|Id: " + this.idEvento + "\n\tAutor: " + this.autorEmail + "\n\tAlvo: " + this.alvoEmail + "\n\tData : " + this.data + 
-						   "\n\tHora: " + this.hora + "\n\tDetalhes: " + this.detalhes + "\n\tResultado: ");
+		
+		System.out.println("\t|Id: " + this.idEvento + "|\n\t|Autor: " + this.autorEmail + "|\n\t|Alvo: " + this.alvoEmail + "|\n\t|Data : " + this.data + 
+						   "|\n\t|Hora: " + this.hora + "|\n\t|Detalhes: " + this.detalhes + "|");
 		if(this.sucesso) {
-			System.out.print("Sucesso\n"); 
+			System.out.print("\t|Resultado: Sucesso|\n"); 
 		}
 		else {
-			System.out.println("Falha\n");
+			System.out.println("\t|Resultado: Falha|\n");
 		}
+		
+		System.out.println("--------------------------------");
+		System.out.println();
 	}
 
 	public int getIdEvento() {

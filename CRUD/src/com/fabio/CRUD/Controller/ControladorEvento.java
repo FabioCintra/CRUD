@@ -4,6 +4,8 @@ import com.fabio.CRUD.DTO.EventoDTO;
 import com.fabio.CRUD.dados.execeptions.ErroNaEntradaSaidaExcepiton;
 import com.fabio.CRUD.negocio.eventos.BancoDeEvento;
 import com.fabio.CRUD.negocio.eventos.CriarEvento;
+import com.fabio.CRUD.negocio.eventos.ExibirEvento;
+import com.fabio.CRUD.negocio.exceptions.ErroEventoException;
 
 public class ControladorEvento {
 	
@@ -26,5 +28,9 @@ public class ControladorEvento {
 	//funcao de criar evento
 	public void criarEvento(EventoDTO evento, BancoDeEvento banco) throws ErroNaEntradaSaidaExcepiton {
 		CriarEvento.criarEvento(evento, banco);
+	}
+	
+	public void exibirEvento(BancoDeEvento banco) throws ErroNaEntradaSaidaExcepiton, ErroEventoException {
+		ExibirEvento.exibirEvento(banco);
 	}
 }

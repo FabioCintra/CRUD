@@ -1,6 +1,7 @@
 package com.fabio.CRUD.dados.eventos;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -53,6 +54,9 @@ public class RepositorioDeEventos implements BancoDeEvento{
 			
 			return (eventos.isEmpty()) ? Optional.empty() : Optional.of(eventos);
 			
+		}
+		catch(FileNotFoundException e) {
+			return Optional.empty();
 		}
 		catch(Exception e){
 			throw new ErroNaEntradaSaidaExcepiton(CodigoErroDTO.ERRO_AO_LER_ARQUIVO, "Erro na leitura de dados!");

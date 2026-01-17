@@ -9,6 +9,7 @@ import com.fabio.CRUD.dados.eventos.RepositorioDeEventos;
 import com.fabio.CRUD.dados.execeptions.ErroNaEntradaSaidaExcepiton;
 import com.fabio.CRUD.dados.usuario.RepositorioDeUsuarios;
 import com.fabio.CRUD.negocio.eventos.BancoDeEvento;
+import com.fabio.CRUD.negocio.exceptions.ErroEventoException;
 import com.fabio.CRUD.negocio.exceptions.OperacaoDeUsuarioInvalidoException;
 import com.fabio.CRUD.negocio.usuario.CodigoErroDTO;
 import com.fabio.CRUD.negocio.usuario.InterfaceDados;
@@ -116,10 +117,19 @@ public class Fachada {
 	 * 
 	 * Evento nada mais eh doque um registro de qualquer acao que for realizada no sistema
 	 */
-	public void criarEvento(EventoDTO evento) throws ErroNaEntradaSaidaExcepiton {
-		ControladorEvento.instance().criarEvento(evento, bancoEvento);
+	public void criarEvento(EventoDTO evento) {
+		try {
+			ControladorEvento.instance().criarEvento(evento, bancoEvento);
+		}
+		catch (ErroNaEntradaSaidaExcepiton e) {
+			System.out.println("\n\u001B[31m[ERRO]: " + e.getMessage() + "\n\u001B[0m");
+		}
+		
 	}
 	
+	public void exibirEventos() throws ErroNaEntradaSaidaExcepiton, ErroEventoException {
+		ControladorEvento.instance().exibirEvento(bancoEvento);
+	}
 	
 	
 	/*

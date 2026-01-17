@@ -4,9 +4,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
+import com.fabio.CRUD.DTO.EventoDTO;
 import com.fabio.CRUD.DTO.UsuarioDTO;
 import com.fabio.CRUD.Fachada.Fachada;
 import com.fabio.CRUD.dados.execeptions.ErroNaEntradaSaidaExcepiton;
+import com.fabio.CRUD.negocio.eventos.Acao;
+import com.fabio.CRUD.negocio.exceptions.ErroEventoException;
 import com.fabio.CRUD.negocio.exceptions.OperacaoDeUsuarioInvalidoException;
 import com.fabio.CRUD.negocio.usuario.CodigoErroDTO;
 import com.fabio.CRUD.negocio.usuario.TypeUser;
@@ -17,6 +20,11 @@ public class Sistema {
 	 * Aqui esta toda a interface que rege o programa!
 	 */
 	public static void iniciar(Usuario usuarioLogado) {
+		EventoDTO evento = null;
+		
+		evento = FabricaDeEventos.gerandoEventoDTO(usuarioLogado.getEmail(), null, Acao.LOGIN_SUCESSO, true);
+		Fachada.instance().criarEvento(evento);
+		
 		Scanner scanf = new Scanner(System.in);
 		Boolean system = true;
 		
@@ -32,6 +40,10 @@ public class Sistema {
 			UsuarioDTO user = null;
 			TypeUser tipo;
 			Boolean status;
+			
+			//topico de atualizacao
+			Usuario userAtualizado;
+			String alteracao, emailChave = null;
 			
 			System.out.println("O que deseja fazer?");
 			System.out.println("1 - Exibir suas informacoes");
@@ -51,13 +63,13 @@ public class Sistema {
 				case "1":
 					System.out.println("\n\tINFORMACOES DE USUARIO");
 					usuarioLogado.infoUser();
+					evento = FabricaDeEventos.gerandoEventoDTO(usuarioLogado.getEmail(), null, Acao.EXIBINDO_INFO, true);
+					Fachada.instance().criarEvento(evento);
 					break;
 				case "2":
 					
 					try {
-						if(usuarioLogado.getTipo() != TypeUser.ADMIN) {
-							throw new OperacaoDeUsuarioInvalidoException(CodigoErroDTO.ACESSO_INVALIDO, "Opcao invalida!");
-						}
+				
 						System.out.println("Nome: ");
 						nome = scanf.nextLine();
 						System.out.println("Email: ");
@@ -69,9 +81,7 @@ public class Sistema {
 						tipo = Validacao.tipoDeUsuario(tipoDeUsuarioAuxiliar);
 					
 						//Alocando a data atual de cadastramento
-						LocalDate agora = LocalDate.now();
-						DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-						dataCriacao = agora.format(formato);
+						dataCriacao = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 						
 						/*
 						 * Status de criacao por padrao eh sempre "true"
@@ -94,24 +104,22 @@ public class Sistema {
 						Fachada.instance().criandoUser(user);
 						
 						System.out.println("\n[SUCESSO]:Usuario criado!\n");
+						evento = FabricaDeEventos.gerandoEventoDTO(usuarioLogado.getEmail(), email, Acao.CADASTRAR_USUARIO_SUCESSO, true);
 						
 					}
-					catch(OperacaoDeUsuarioInvalidoException e) {
+					catch(OperacaoDeUsuarioInvalidoException | ErroNaEntradaSaidaExcepiton  e) {
 						System.out.println("\n\u001B[31m[ERRO]: " + e.getMessage() + "\n\u001B[0m");
+						evento = FabricaDeEventos.gerandoEventoDTO(usuarioLogado.getEmail(), email, Acao.CADASTRAR_USUARIO_ERRO, false);
 					}
-					catch(ErroNaEntradaSaidaExcepiton e) {
-						System.out.println("\n\u001B[31m[ERRO]: " + e.getMessage() + "\n\u001B[0m");
-					
+					finally {
+						Fachada.instance().criarEvento(evento);
 					}
 					
 					break;
 				case "3":
-					Usuario userAtualizado;
-					String alteracao, emailChave;
+					
 					try {
-						if(usuarioLogado.getTipo() != TypeUser.ADMIN) {
-							throw new OperacaoDeUsuarioInvalidoException(CodigoErroDTO.ACESSO_INVALIDO, "Opcao invalida!");
-						}
+						
 						/*
 						 * Busca o usuario a ser atualizado
 						 */
@@ -179,20 +187,22 @@ public class Sistema {
 						 */
 						if(userBuscado.equals(userAtualizado)) {
 							System.out.println("\nNenhuma mudanca foi realizada!\n");
+							throw new OperacaoDeUsuarioInvalidoException(CodigoErroDTO.USUARIO_NAO_ALTERADO, "Usuario nao foi alterado!");
 						}
 						else {
 							Fachada.instance().atualizacaoDeUser(userAtualizado, emailChave);
 							System.out.println("\n[SUCESSO]:Usuario Atualizado!\n");
-							
+							evento = FabricaDeEventos.gerandoEventoDTO(usuarioLogado.getEmail(), emailChave, Acao.ATUALIZAR_USUARIO_SUCESSO, true);
 						}
 						
 					}
-					catch(OperacaoDeUsuarioInvalidoException e) {
+					catch(OperacaoDeUsuarioInvalidoException | ErroNaEntradaSaidaExcepiton e) {
 						
 						System.out.println("\n\u001B[31m[ERRO]: " + e.getMessage() + "\n\u001B[0m");
-						
-					} catch (ErroNaEntradaSaidaExcepiton e) {
-						System.out.println("\n\u001B[31m[ERRO]: " + e.getMessage() + "\n\u001B[0m");
+						evento = FabricaDeEventos.gerandoEventoDTO(usuarioLogado.getEmail(), emailChave, Acao.ATUALIZAR_USUARIO_ERRO, false);
+					}
+					finally {
+						Fachada.instance().criarEvento(evento);
 					}
 					break;
 				case "4":
@@ -200,9 +210,6 @@ public class Sistema {
 					emailBuscado = scanf.next().toLowerCase(); 
 					
 					try {
-						if(usuarioLogado.getTipo() != TypeUser.ADMIN) {
-							throw new OperacaoDeUsuarioInvalidoException(CodigoErroDTO.ACESSO_INVALIDO, "Opcao invalida!");
-						}
 						
 						/*
 						 * Valida o email e se estiver tudo ok, por meio de encadeamento de metodos retorna a fachada.
@@ -215,14 +222,16 @@ public class Sistema {
 						Fachada.instance().deletarUser(emailBuscado);
 						
 						System.out.println("\n[SUCESSO]: Usuario deletado!\n");
+						evento = FabricaDeEventos.gerandoEventoDTO(usuarioLogado.getEmail(), emailBuscado, Acao.REMOVER_USUARIO_SUCESSO, true);
 						
 					} 
-					catch(OperacaoDeUsuarioInvalidoException e) {
+					catch(OperacaoDeUsuarioInvalidoException | ErroNaEntradaSaidaExcepiton e) {
 						System.out.println("\n\u001B[31m[ERRO]: " + e.getMessage() + "\n\u001B[0m");
+						evento = FabricaDeEventos.gerandoEventoDTO(usuarioLogado.getEmail(), emailBuscado, Acao.REMOVER_USUARIO_ERRO, false);
 					}
-					catch (ErroNaEntradaSaidaExcepiton e) {
-						System.out.println("\n\u001B[31m[ERRO]: " + e.getMessage() + "\n\u001B[0m");
-					} 
+					finally {
+						Fachada.instance().criarEvento(evento);
+					}
 					
 					break;
 				case "5":
@@ -245,22 +254,29 @@ public class Sistema {
 						
 						//Imprime as informacoes de usuario na tela
 						userBuscado.infoUser();
+						evento = FabricaDeEventos.gerandoEventoDTO(usuarioLogado.getEmail(), emailBuscado, Acao.BUSCAR_USUARIO_SUCESSO, true);
 						
 					} 
-					catch(OperacaoDeUsuarioInvalidoException e) {
-						System.out.println("\n\u001B[31m[ERRO]: " + e.getMessage() + "\n\u001B[0m");	
-					}
-					catch (ErroNaEntradaSaidaExcepiton e) {
+					catch(OperacaoDeUsuarioInvalidoException | ErroNaEntradaSaidaExcepiton e) {
 						System.out.println("\n\u001B[31m[ERRO]: " + e.getMessage() + "\n\u001B[0m");
-					} 
-					
-					
+						evento = FabricaDeEventos.gerandoEventoDTO(usuarioLogado.getEmail(), emailBuscado, Acao.BUSCAR_USUARIO_ERRO, false);
+					}
+					finally {
+						Fachada.instance().criarEvento(evento);
+					}
+
 					break;
 				case "6":
-					
+				try {
+					Fachada.instance().exibirEventos();
+				} catch (ErroNaEntradaSaidaExcepiton | ErroEventoException e) {
+					System.out.println("\n\u001B[31m[ERRO]: " + e.getMessage() + "\n\u001B[0m");
+				}
 					break;
 				case "0":
 					system = false;
+					evento = FabricaDeEventos.gerandoEventoDTO(usuarioLogado.getEmail(), null, Acao.LOGOUT, true);
+					Fachada.instance().criarEvento(evento);
 					break;
 			}
 		}
