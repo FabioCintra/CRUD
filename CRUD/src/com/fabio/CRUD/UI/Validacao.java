@@ -3,6 +3,7 @@ package com.fabio.CRUD.UI;
 import java.util.Scanner;
 
 import com.fabio.CRUD.negocio.usuario.TypeUser;
+import com.fabio.CRUD.negocio.usuario.Usuario;
 
 
 public class Validacao {
@@ -10,8 +11,15 @@ public class Validacao {
 	/*
 	 * Valida se a opcao de acao do menu foi escolhida adequadamente
 	 */
-	public static String validarOpcaoMenu(String opcao) {
-		String regex = "^[0-6]{1}$";
+	public static String validarOpcaoMenu(String opcao, TypeUser user) {
+		
+		String regex;
+		if(user == TypeUser.ADMIN) {
+			regex = "^[0-6]{1}$";
+		}
+		else {
+			regex = "^[0-1]{1}$";
+		}
 		
 		while(!opcao.matches(regex)){
 			Scanner scanf = new Scanner(System.in);

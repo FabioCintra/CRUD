@@ -35,14 +35,16 @@ public class Sistema {
 			
 			System.out.println("O que deseja fazer?");
 			System.out.println("1 - Exibir suas informacoes");
-			System.out.println("2 - Cadastrar novo usuario");
-			System.out.println("3 - Atualizar usuario");
-			System.out.println("4 - Deletar usuario");
-			System.out.println("5 - Buscar usuario");
-			System.out.println("6 - Exibir eventos!");
+			if(usuarioLogado.getTipo() == TypeUser.ADMIN) {
+				System.out.println("2 - Cadastrar novo usuario");
+				System.out.println("3 - Atualizar usuario");
+				System.out.println("4 - Deletar usuario");
+				System.out.println("5 - Buscar usuario");
+				System.out.println("6 - Exibir eventos!");
+			}
 			System.out.println("0 - Sair");
 			
-			opcaoMenu = Validacao.validarOpcaoMenu(scanf.next());
+			opcaoMenu = Validacao.validarOpcaoMenu(scanf.next(), usuarioLogado.getTipo());
 			scanf.nextLine(); // consumindo o '\n'
 			
 			switch(opcaoMenu) {
@@ -134,7 +136,7 @@ public class Sistema {
 						 */
 						System.out.println("\n\to que deseja atualizar?");
 						System.out.println("\t1 - Email\n\t2 - Nome\n\t3 - Senha\n\t4 - Status\n\t5 - Sair");
-						String opcao = Validacao.validarOpcaoMenu(scanf.next());
+						String opcao = Validacao.validarOpcaoMenu(scanf.next(), usuarioLogado.getTipo());
 						scanf.nextLine();
 						
 							
@@ -252,6 +254,9 @@ public class Sistema {
 						System.out.println("\n\u001B[31m[ERRO]: " + e.getMessage() + "\n\u001B[0m");
 					} 
 					
+					
+					break;
+				case "6":
 					
 					break;
 				case "0":
