@@ -3,6 +3,12 @@ package com.fabio.CRUD.negocio.validacao.basicas;
 import com.fabio.CRUD.negocio.exceptions.OperacaoDeUsuarioInvalidoException;
 import com.fabio.CRUD.negocio.usuario.CodigoErroDTO;
 
+
+/*
+ *Essa classe como um todo serve para validar se um nome possue o minimo necessario para ser um nome
+ *
+ * Mas tbm se ele nao esta vazio!
+ */
 public class ValidarNome {
 	
 	public static void validarNome(String nome) throws OperacaoDeUsuarioInvalidoException {

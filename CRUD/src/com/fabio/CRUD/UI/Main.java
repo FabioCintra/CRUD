@@ -1,5 +1,7 @@
 package com.fabio.CRUD.UI;
 
+import java.util.Scanner;
+
 import com.fabio.CRUD.DTO.EventoDTO;
 import com.fabio.CRUD.Fachada.Fachada;
 import com.fabio.CRUD.config.BootStrapIncialization;
@@ -29,12 +31,39 @@ public class Main {
 		 * Se o email estiver cadastrado e a senha for igual a senha cadastrada nesse email
 		 * Eh retornado o tipo de usuario dessa conta!
 		 */
-		Usuario user = TelaLogin.login();;
+		Usuario user = null; 
+		String opcao = "";
 		
-		//Depois adicionar algo para que o usuario possa tentar dnv caso de erro ou sair
-//		while(user == null) {
-//			user = TelaLogin.login();
-//		}
+		while(user == null) {
+			
+			/*
+			 * Vai tentar logar no usuario atraves das informacoes dadas em TelaLogin.Login()
+			 * 
+			 * Mas se retornar nulo, vai registrar um evento de erro de login!
+			 * 
+			 * Mas se nao, sai do While e vai direto pra tela do sistema
+			 * 
+			 */
+			user = TelaLogin.login();
+			if(user == null) {
+				
+				//cadastrando evento
+				System.out.println("\n\u001B[31m[ERRO]: " + "User not found" + "\n\u001B[0m");
+				EventoDTO evento = null;
+				
+				evento = FabricaDeEventos.gerandoEventoDTO(null, null, Acao.LOGIN_ERRO, false);
+				Fachada.instance().criarEvento(evento);
+				
+				/*
+				 * Pergunta ao usuario se deseja tentar novamente ou encerrar o programa!
+				 */
+				System.out.println("1 - Tentar novamente\n2 - Sair");
+				opcao = Validacao.validarOpcaoMenuErro(new Scanner(System.in).next());
+				
+				if(opcao.equals("2")) {break;}
+			}
+			
+		}
 		
 		
 		/*
@@ -47,16 +76,10 @@ public class Main {
 		 * 
 		 * Alem disso registra todas as acoes que alguem fizer no programa mesmo que tal acao nao tenha exito
 		 * 
+		 * So entra se o usuario nao escolher sair do programa, caso tenha errado as credenciaisadm
 		 */
-		if(!(user == null)){Sistema.iniciar(user);}
-		else {
-			System.out.println("\n\u001B[31m[ERRO]: " + "User not found" + "\n\u001B[0m");
-			EventoDTO evento = null;
-			
-			evento = FabricaDeEventos.gerandoEventoDTO(user.getEmail(), null, Acao.LOGIN_ERRO, false);
-			Fachada.instance().criarEvento(evento);
-			
-		}
+		if(!(opcao.equals("2"))){Sistema.iniciar(user);}
+		
 	}
 
 }

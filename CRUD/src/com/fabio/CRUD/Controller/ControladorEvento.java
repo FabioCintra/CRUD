@@ -30,6 +30,7 @@ public class ControladorEvento {
 		CriarEvento.criarEvento(evento, banco);
 	}
 	
+	//funcao de exibir evento
 	public void exibirEvento(BancoDeEvento banco) throws ErroNaEntradaSaidaExcepiton, ErroEventoException {
 		ExibirEvento.exibirEvento(banco);
 	}

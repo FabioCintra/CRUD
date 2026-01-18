@@ -4,7 +4,13 @@ import com.fabio.CRUD.negocio.exceptions.OperacaoDeUsuarioInvalidoException;
 import com.fabio.CRUD.negocio.usuario.CodigoErroDTO;
 
 
-
+/*
+ *Essa classe como um todo serve para validar se um email possue o minimo necessario para ser um email
+ *
+ * Mas tbm se ele nao esta vazio!
+ * 
+ * OBS: A checagem de se o email esta ou nao em uso, eh feito no DTO de usuario!
+ */
 public class ValidaEmail {
 	public static void validarEmail(String email) throws OperacaoDeUsuarioInvalidoException{
 		

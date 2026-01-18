@@ -71,29 +71,27 @@ public class RepositorioDeUsuarios implements InterfaceDados{
 	 * OBS: Caso o Map estiver vazio ele ira retornar uma execessao alertando que o banco de dados de users esta vazio
 	 */
 	public Optional<Usuario> buscaPorEmail(String email) throws ErroNaEntradaSaidaExcepiton {
-		
+	
 		Usuario userBuscado;
 		Map<String,Usuario> mapUser = lendoUsurarios().orElse(new HashMap<>());
 		
 			
 		userBuscado = mapUser.get(email);
 			
-		if(userBuscado == null) {
-			return Optional.empty();
-		}
-		else {
-			return Optional.of(userBuscado);
-		}
+		return(userBuscado == null) ? Optional.empty() : Optional.of(userBuscado);
 		
 	}
-
+	
+	/*
+	 *Essa funcao ela pega o usuario j[a com a alteracao feita, e por meio de sua chave de acesso(email) 
+	 *eh encontrado e atualizado!
+	 *
+	 * OBS: A checagem da sua possivel existencia eh feita na UI
+	 */
 	@Override
 	public void atualizarUsuarioPorEmail(Usuario usuarioAtualizado, String emailChave) throws ErroNaEntradaSaidaExcepiton {
 		
 		Map<String,Usuario> mapUser = lendoUsurarios().orElse(null);
-		
-		//o if pode ser que suma depois
-		
 		
 		mapUser.remove(emailChave);
 		mapUser.put(usuarioAtualizado.getEmail(), usuarioAtualizado);
@@ -103,6 +101,11 @@ public class RepositorioDeUsuarios implements InterfaceDados{
 		
 	}
 	
+	
+	/*
+	 *Essa funcao ela pega o Map de usuario e por meio do email escolhido e verificado anteriormente
+	 *encontra o usuario e o deleta do sistema, depois, atualiza o BD Usuarios sem ele!
+	 */
 	@Override
 	public void deletarUsuarioPeloEmail(String email) throws ErroNaEntradaSaidaExcepiton {
 		Map<String,Usuario> mapUser = lendoUsurarios().orElse(null);
@@ -115,6 +118,10 @@ public class RepositorioDeUsuarios implements InterfaceDados{
 		
 	}
 	
+	
+	//Funcao que eh responsavel por salvar o banco de dados usuario!
+	
+	//OBS: sempre que ela atualiza ela susbstitui tudo que ha dentro dela, pois, BancoDeUsuarios, s[o possui usuarios!
 	private void salvamentoDeHashMap(Map<String,Usuario> mapUser) throws ErroNaEntradaSaidaExcepiton {
 		try(ObjectOutputStream salvar = new ObjectOutputStream(new FileOutputStream("./data/BancoDeUsuarios.bin "))){
 			

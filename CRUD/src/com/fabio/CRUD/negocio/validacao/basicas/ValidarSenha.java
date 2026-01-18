@@ -3,6 +3,12 @@ package com.fabio.CRUD.negocio.validacao.basicas;
 import com.fabio.CRUD.negocio.exceptions.OperacaoDeUsuarioInvalidoException;
 import com.fabio.CRUD.negocio.usuario.CodigoErroDTO;
 
+
+/*
+ *Essa classe como um todo serve para validar se uma senha possue o minimo necessario para ser uma senha valida
+ *
+ * Mas tbm se ela nao esta vazio!
+ */
 public class ValidarSenha {
 	
 	public static void validarSenha(String senha) throws OperacaoDeUsuarioInvalidoException {

@@ -28,6 +28,7 @@ public class Evento implements Serializable{
 		this.sucesso = evento.sucesso();
 	}
 	
+	// imprime um evento na tela!
 	public void imprimir() {
 		
 		System.out.println("\t|Id: " + this.idEvento + "|\n\t|Autor: " + this.autorEmail + "|\n\t|Alvo: " + this.alvoEmail + "|\n\t|Data : " + this.data + 

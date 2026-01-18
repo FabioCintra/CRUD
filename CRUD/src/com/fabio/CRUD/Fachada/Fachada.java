@@ -161,6 +161,8 @@ public class Fachada {
 		}
 		
 		if(!(senha.equals(user.getSenha()))){
+			//isso eh para permitir que a tela de login possa ser usada ate o usuario acertar as credenciais!
+			user = null;
 			throw new OperacaoDeUsuarioInvalidoException(CodigoErroDTO.SENHA_DIFERENTE, "Senha incorreta!");
 		}
 		

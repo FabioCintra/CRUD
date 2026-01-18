@@ -39,8 +39,7 @@ public class BootStrapIncialization {
 				BootStrapIncialization.criandoPrimeiroAdm();
 			}
 			else {
-				InterfaceDados implementada = new RepositorioDeUsuarios();
-				Map<String,Usuario> users = implementada.lendoUsurarios().orElse(new HashMap<>());
+				Map<String,Usuario> users = new RepositorioDeUsuarios().lendoUsurarios().orElse(new HashMap<>());
 				
 				//Se o admin principal nao estiver cadastrado!
 				if(users.get(AppConfig.get("admin.email")) == null) {
@@ -60,9 +59,7 @@ public class BootStrapIncialization {
 	
 	private static void criandoPrimeiroAdm() throws ErroNaEntradaSaidaExcepiton, OperacaoDeUsuarioInvalidoException {
 		//Alocando a data atual de cadastramento
-		LocalDate agora = LocalDate.now();
-		DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		String dataCriacao = agora.format(formato);
+		String dataCriacao = LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 		
 		UsuarioDTO user = new UsuarioDTO(AppConfig.get("admin.nome"),AppConfig.get("admin.email"), AppConfig.get("admin.senha"),TypeUser.ADMIN,dataCriacao,true);
 		Fachada.instance().criandoUser(user);

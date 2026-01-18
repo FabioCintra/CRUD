@@ -33,7 +33,8 @@ public class ControladorUsuario {
 
 		return controllerUsers;
 	}
-
+	
+	//essa funcao ela tem como funcao criar um usuario!
 	public void criarUsuario(UsuarioDTO user, InterfaceDados e)
 			throws ErroNaEntradaSaidaExcepiton, OperacaoDeUsuarioInvalidoException {
 
@@ -41,32 +42,48 @@ public class ControladorUsuario {
 		criador.criarUsuario(user);
 
 	}
-
+	
+	//essa funcao ela tem como objetivo verificar se um email esta dentro das normas do programa!
 	public void verificaEmail(String email) throws ErroNaEntradaSaidaExcepiton, OperacaoDeUsuarioInvalidoException {
 		ValidaEmail.validarEmail(email);
 
 	}
-
+	
+	//essa funcao ela tem como objetivo verificar se o nome do usuario esta dentro das normas do programa!
 	public void verificaNome(String nome) throws OperacaoDeUsuarioInvalidoException {
 		ValidarNome.validarNome(nome);
 	}
 
+	//essa funcao ela tem como objetivo verificar se a senha do usuario esta dentro das normas do programa!
 	public void verificaSenha(String senha) throws OperacaoDeUsuarioInvalidoException {
 		ValidarSenha.validarSenha(senha);
 	}
-
+	
+	/*
+	 * essa funcao ela tem como objetivo buscar um usuario no banco de dados por meio da sua chave de acesso(email)!
+	 * 
+	 * E como pode ocorrer de encontrar ele ou nao, se encontrar retorna ele
+	 * 
+	 * Se nao retorna um usuario nulo
+	 */
 	public Usuario buscarUsuario(String email, InterfaceDados e) throws ErroNaEntradaSaidaExcepiton {
-		BuscarUsuario busca = new BuscarUsuario();
-		Usuario user = busca.buscarUsuario(email, e);
+
+		Usuario user = new BuscarUsuario().buscarUsuario(email, e);
 
 		return user;
 	}
-
+	
+	/*
+	 * Essa funcao tem como intuito atualizar um usuario!
+	 */
 	public void atualizarUser(Usuario atualizado, String emailChave, InterfaceDados inter)
 			throws ErroNaEntradaSaidaExcepiton {
 		AtualizarUsuario.atualizandoUsuario(emailChave, atualizado, inter);
 	}
-
+	
+	/*
+	 * Essa funcao tem como intuito deletar um usuario!
+	 */
 	public void deletarUsuario(String email, InterfaceDados implementada) throws ErroNaEntradaSaidaExcepiton {
 		DeletarUsuario.deletarUsuarioPorEmail(email, implementada);
 	}

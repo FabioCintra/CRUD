@@ -30,7 +30,7 @@ public class Usuario implements Serializable{
 
 	}
 	
-	//Para quando houver necessidade de buscas e o user nao for encontrado
+	//Para quando houver necessidade de buscas e o user nao for encontrado, para poder retornar um usuario vazio
 	public  Usuario() {};
 	
 	public Usuario(Usuario user) {
@@ -110,6 +110,7 @@ public class Usuario implements Serializable{
 	}
 	
 	public Boolean equals(Usuario user) {
+		
 		if(user.getStatus() == this.status && user.getDataCriacao().equals(this.dataCriacao) && user.getEmail().equals(this.email) && user.getId() == this.id && user.getNome().equals(this.nome)  &&
 			user.getSenha().equals(this.senha) && user.getTipo() == this.tipo) {
 			return true;
